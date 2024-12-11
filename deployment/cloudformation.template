@@ -321,6 +321,12 @@ Resources:
               -
                 Effect: "Allow"
                 Action:
+                  - "lambda:InvokeFunction"
+                Resource:
+                  - !Sub ${WebSocketSendMessageFunction.Arn}  
+              -
+                Effect: "Allow"
+                Action:
                   - "dynamodb:Query"
                   - "dynamodb:Scan"
                   - "dynamodb:PutItem"
@@ -464,6 +470,7 @@ Resources:
            
   OverlayAudioRole:
         Type: "AWS::IAM::Role"
+        DependsOn: WebSocketSendMessageFunction
         Properties:
           AssumeRolePolicyDocument:
             Version: "2012-10-17"
@@ -517,6 +524,7 @@ Resources:
 
   kvsTranscriber:
     Type: "AWS::Lambda::Function"
+    DependsOn: WebSocketSendMessageFunction
     Properties:
       Description:  >
         Process audio from Kinesis Video Stream and use Amazon Transcribe to get text
@@ -525,7 +533,7 @@ Resources:
 
       Handler: "com.amazonaws.kvstranscribestreaming.KVSTranscribeStreamingLambda::handleRequest"
       Role: !GetAtt KvsTranscribeRole.Arn
-      Runtime: java8
+      Runtime: java11
       MemorySize: 512
       # maximum timeout is 15 minutes today
       Timeout: 900
@@ -545,6 +553,7 @@ Resources:
           SAVE_PARTIAL_TRANSCRIPTS: "TRUE"
           START_SELECTOR_TYPE: "FRAGMENT_NUMBER"
           SEND_ANONYMOUS_DATA: !FindInMap [ "Send", "AnonymousUsage", "Data"]
+          WS_SEND_MESSAGE_LAMBDA: !GetAtt WebSocketSendMessageFunction.Arn
       Code:
         S3Bucket: !Ref existingS3BucketName
         S3Key: !Join ["", [!Ref existingS3Path, 'kvs_transcribe_streaming_lambda.zip']]
@@ -555,9 +564,9 @@ Resources:
       Description:  >
         AWS Lambda Function to start (asynchronous) streaming transcription; it is expected to be called by the
         Amazon Connect Contact Flow.
-      Handler: "kvs_trigger.handler"
+      Handler: "lambda_function.handler"
       Role: !GetAtt KvsTriggerRole.Arn
-      Runtime: "nodejs12.x"
+      Runtime: "nodejs22.x"
       MemorySize: 128
       Timeout: 30
       Environment:
@@ -572,21 +581,32 @@ Resources:
     Type: AWS::Lambda::LayerVersion
     Properties:
       CompatibleRuntimes:
-        - python3.8
+        - python3.13
       Content:
         S3Bucket: !Ref existingS3BucketName
         S3Key: !Join ["", [!Ref existingS3Path, 'layer.zip']]
       Description: Layer providing ffmpeg library to audio utils lambda
       LayerName: connectaudioutils
-      
+
+  wstils:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      CompatibleRuntimes:
+        - python3.13
+      Content:
+        S3Bucket: !Ref existingS3BucketName
+        S3Key: !Join ["", [!Ref existingS3Path, 'wslayer.zip']]
+      Description: Layer providing common DynamodDB library to ws_* lambda
+      LayerName: wstils
+
   overlayaudio:
     Type: "AWS::Lambda::Function"
     Properties:
       Description:  >
         AWS Lambda Function that will merge two audio files from S3 bucket and put them in a different S3 Bucket
-      Handler: "overlay_audio.lambda_handler"
+      Handler: "lambda_function.lambda_handler"
       Role: !GetAtt OverlayAudioRole.Arn
-      Runtime: "python3.8"
+      Runtime: python3.13
       Layers: 
       - !Ref connectaudioutils
       MemorySize: 256
@@ -604,9 +624,9 @@ Resources:
     Properties:
       Description:  >
         AWS Lambda Function that will be triggered when the wav call recording file is placed in S3. This function will collect all the transcript segments, and the audio file location and update the contact db.
-      Handler: "process_contact.handler"
+      Handler: "lambda_function.handler"
       Role: !GetAtt ProcessContactRole.Arn
-      Runtime: "nodejs12.x"
+      Runtime: "nodejs22.x"
       MemorySize: 256
       Timeout: 120
       Environment:
@@ -620,3 +640,243 @@ Resources:
       Code:
         S3Bucket: !Ref existingS3BucketName
         S3Key: !Join ["", [!Ref existingS3Path, 'process_contact.zip']]
+
+  ApiGatewayWebSocket:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: websocket-api-gateway
+      ProtocolType: WEBSOCKET
+      RouteSelectionExpression: "$request.body.action"
+      ApiKeySelectionExpression: $request.header.x-api-key
+
+  ConnectRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref ApiGatewayWebSocket
+      RouteKey: $connect
+      AuthorizationType: NONE
+      OperationName: ConnectRoute
+      Target: !Join
+        - '/'
+        - - 'integrations'
+          - !Ref ConnectIntegration
+
+  ConnectIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref ApiGatewayWebSocket
+      Description: Connect Integration
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${WebSocketConnectFunction.Arn}/invocations'
+
+  DisconnectRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref ApiGatewayWebSocket
+      RouteKey: $disconnect
+      AuthorizationType: NONE
+      OperationName: DisconnectRoute
+      Target: !Join
+        - '/'
+        - - 'integrations'
+          - !Ref DisconnectIntegration
+
+  DisconnectIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref ApiGatewayWebSocket
+      Description: Disconnect Integration
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${WebSocketDisconnectFunction.Arn}/invocations'
+
+  WebSocketConnectFunctionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess'
+
+  WebSocketConnectFunctionAdditionalPermission:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: websocket-on-connect-policy
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'logs:*'
+              - 'lambda:*'
+              - 'cloudwatch:*'
+            Resource: '*'
+            Effect: Allow
+      Roles:
+        - !Ref WebSocketConnectFunctionRole
+
+  WebSocketConnectFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket: !Ref existingS3BucketName
+        S3Key: !Join ["", [!Ref existingS3Path, 'ws_on_connect.zip']]
+      Handler: lambda_function.lambda_handler
+      Role: !GetAtt WebSocketConnectFunctionRole.Arn
+      Timeout: 900
+      Runtime: python3.13
+      Layers:
+        - !Ref wstils
+
+  WebSocketConnectFunctionCatchAllPermissionProd1:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      Principal: apigateway.amazonaws.com      
+      FunctionName: !Ref WebSocketConnectFunction
+      SourceArn: !Sub
+          - arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${__ApiId__}/${__Stage__}/$connect
+          - __Stage__: '*'
+            __ApiId__: !Ref ApiGatewayWebSocket
+
+  WebSocketDisconnectFunctionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess'
+
+  DisconnectFunctionAdditionalPermission:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: websocket-on-disconnect-policy
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'logs:*'
+              - 'lambda:*'
+              - 'cloudwatch:*'
+            Resource: '*'
+            Effect: Allow
+      Roles:
+        - !Ref WebSocketDisconnectFunctionRole
+
+  WebSocketDisconnectFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket: !Ref existingS3BucketName
+        S3Key: !Join ["", [!Ref existingS3Path, 'ws_on_disconnect.zip']]
+      Handler: lambda_function.lambda_handler
+      Role: !GetAtt WebSocketDisconnectFunctionRole.Arn
+      Timeout: 900
+      Runtime: python3.13
+      Layers:
+        - !Ref wstils
+
+  WebSocketDisconnectFunctionCatchAllPermissionProd1:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      Principal: apigateway.amazonaws.com      
+      FunctionName: !Ref WebSocketDisconnectFunction
+      SourceArn: !Sub
+          - arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${__ApiId__}/${__Stage__}/$disconnect
+          - __Stage__: '*'
+            __ApiId__: !Ref ApiGatewayWebSocket
+
+  WebSocketSendMessageFunctionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess'
+        - 'arn:aws:iam::aws:policy/AmazonAPIGatewayInvokeFullAccess'
+
+  WebSocketSendMessageFunctionAdditionalPermission:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: websocket-send-message-policy
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'logs:*'
+              - 'lambda:*'
+              - 'cloudwatch:*'
+            Resource: '*'
+            Effect: Allow
+      Roles:
+        - !Ref WebSocketSendMessageFunctionRole
+
+  WebSocketSendMessageFunction:
+    DependsOn: 
+      - ApiGatewayWebSocketDeployment
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket: !Ref existingS3BucketName
+        S3Key: !Join ["", [!Ref existingS3Path, 'ws_send_message.zip']]
+      Handler: lambda_function.lambda_handler
+      Role: !GetAtt WebSocketSendMessageFunctionRole.Arn
+      Timeout: 900
+      Runtime: python3.13
+      Environment:
+        Variables:
+          WEBSOCKET_API: !Sub https://${ApiGatewayWebSocket}.execute-api.${AWS::Region}.amazonaws.com/${Stage}
+      Layers:
+        - !Ref wstils
+
+  ApiGatewayWebSocketDeployment:
+    Type: AWS::ApiGatewayV2::Deployment
+    DependsOn:
+    - ConnectRoute
+    - DisconnectRoute
+    Properties:
+      ApiId: !Ref ApiGatewayWebSocket
+
+  Stage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      StageName: Prod
+      Description: Prod Stage
+      DeploymentId: !Ref ApiGatewayWebSocketDeployment
+      ApiId: !Ref ApiGatewayWebSocket
+
+  WebSocketConnectionDBTable: 
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      AttributeDefinitions: 
+        - 
+          AttributeName: "connection_id"
+          AttributeType: "S"
+      KeySchema: 
+        - 
+          AttributeName: "connection_id"
+          KeyType: "HASH"
+      ProvisionedThroughput: 
+        ReadCapacityUnits: "1"
+        WriteCapacityUnits: "1"
+      TableName: "ws_connection"

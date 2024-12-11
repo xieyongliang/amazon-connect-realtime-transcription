@@ -27,6 +27,7 @@ public class TranscriptionRequest {
     String inputFileName = null;
     String startFragmentNum = null;
     String connectContactId = null;
+    String customerPhoneNumber = null;
     Optional<String> languageCode = Optional.empty();
     boolean transcriptionEnabled = false;
     Optional<Boolean> saveCallRecording = Optional.empty();
@@ -72,6 +73,16 @@ public class TranscriptionRequest {
 
         this.connectContactId = connectContactId;
     }
+
+    public String getCustomerPhoneNumber() {
+
+        return this.customerPhoneNumber;
+    }
+
+    public void setCustomerPhoneNumber(String customerPhoneNumber) {
+
+        this.customerPhoneNumber = customerPhoneNumber;
+    }    
 
     public Optional<String> getLanguageCode() {
 

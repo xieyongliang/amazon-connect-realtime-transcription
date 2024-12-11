@@ -31,6 +31,7 @@ exports.handler = (event, context, callback) => {
         payload ={
             inputFileName: "keepWarm.wav",
             connectContactId: "12b87d2b-keepWarm",
+            customerPhoneNumber: "001234567890",
             transcriptionEnabled: "false"
         };
     } else {
@@ -38,12 +39,13 @@ exports.handler = (event, context, callback) => {
             streamARN: event.Details.ContactData.MediaStreams.Customer.Audio.StreamARN,
             startFragmentNum: event.Details.ContactData.MediaStreams.Customer.Audio.StartFragmentNumber,
             connectContactId: event.Details.ContactData.ContactId,
+            customerPhoneNumber: event.Details.ContactData.CustomerEndpoint.Address,
             transcriptionEnabled: event.Details.ContactData.Attributes.transcribeCall === "true" ? true : false,
             saveCallRecording: event.Details.ContactData.Attributes.saveCallRecording === "false" ? false : true,
-            languageCode: event.Details.ContactData.Attributes.languageCode === "es-US" ? "es-US" : "en-US",
+            languageCode: event.Details.ContactData.Attributes.languageCode === "es-US" ? "es-US" : "zh-CN",
             // These default to true for backwards compatability purposes
             streamAudioFromCustomer: event.Details.ContactData.Attributes.streamAudioFromCustomer === "false" ? false : true,
-            streamAudioToCustomer: event.Details.ContactData.Attributes.streamAudioToCustomer === "false" ? false : true
+            streamAudioToCustomer: event.Details.ContactData.Attributes.streamAudioToCustomer === "true" ? true : false
         };
     }
 

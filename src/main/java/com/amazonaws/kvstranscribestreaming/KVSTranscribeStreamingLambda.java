@@ -26,6 +26,8 @@ import software.amazon.awssdk.services.transcribestreaming.model.LanguageCode;
 import software.amazon.awssdk.services.transcribestreaming.model.MediaEncoding;
 import software.amazon.awssdk.services.transcribestreaming.model.StartStreamTranscriptionRequest;
 
+import com.amazonaws.services.lambda.AWSLambdaClientBuilder;
+
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.file.Path;
@@ -102,10 +104,14 @@ public class KVSTranscribeStreamingLambda implements RequestHandler<Transcriptio
             // create a SegmentWriter to be able to save off transcription results
             AmazonDynamoDBClientBuilder builder = AmazonDynamoDBClientBuilder.standard();
             builder.setRegion(REGION.getName());
-            fromCustomerSegmentWriter = new TranscribedSegmentWriter(request.getConnectContactId(), new DynamoDB(builder.build()),
-                    CONSOLE_LOG_TRANSCRIPT_FLAG);
-            toCustomerSegmentWriter = new TranscribedSegmentWriter(request.getConnectContactId(), new DynamoDB(builder.build()),
-                    CONSOLE_LOG_TRANSCRIPT_FLAG);
+
+            AWSLambdaClientBuilder builder2 = AWSLambdaClientBuilder.standard();
+            builder2.setRegion(REGION.getName());
+
+            fromCustomerSegmentWriter = new TranscribedSegmentWriter(request.getConnectContactId(), request.getCustomerPhoneNumber(), new DynamoDB(builder.build()),
+                    CONSOLE_LOG_TRANSCRIPT_FLAG, builder2.build());
+            toCustomerSegmentWriter = new TranscribedSegmentWriter(request.getConnectContactId(), request.getCustomerPhoneNumber(), new DynamoDB(builder.build()),
+                    CONSOLE_LOG_TRANSCRIPT_FLAG, builder2.build());
 
             // If an inputFileName has been provided in the request, stream audio from the file to Transcribe
             if (request.getInputFileName() != null) {

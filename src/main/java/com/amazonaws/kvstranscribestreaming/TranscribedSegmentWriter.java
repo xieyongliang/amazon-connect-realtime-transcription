@@ -12,6 +12,11 @@ import java.text.NumberFormat;
 import java.time.Instant;
 import java.util.List;
 
+import com.amazonaws.services.lambda.AWSLambda;
+import com.amazonaws.services.lambda.model.InvokeRequest;
+import com.amazonaws.services.lambda.model.InvokeResult;
+import java.nio.charset.StandardCharsets;
+
 /**
  * TranscribedSegmentWriter writes the transcript segments to DynamoDB
  *
@@ -33,16 +38,24 @@ import java.util.List;
 public class TranscribedSegmentWriter {
 
     private String contactId;
+    private String customerPhoneNumber;
     private DynamoDB ddbClient;
     private Boolean consoleLogTranscriptFlag;
     private static final boolean SAVE_PARTIAL_TRANSCRIPTS = Boolean.parseBoolean(System.getenv("SAVE_PARTIAL_TRANSCRIPTS"));
     private static final Logger logger = LoggerFactory.getLogger(TranscribedSegmentWriter.class);
+    private AWSLambda lambdaClient;
+    private String notification_lambda;
 
-    public TranscribedSegmentWriter(String contactId, DynamoDB ddbClient, Boolean consoleLogTranscriptFlag) {
+    public TranscribedSegmentWriter(String contactId, String customerPhoneNumber, DynamoDB ddbClient, Boolean consoleLogTranscriptFlag, AWSLambda lambdaClient) {
 
         this.contactId = Validate.notNull(contactId);
+        this.customerPhoneNumber = Validate.notNull(customerPhoneNumber);
         this.ddbClient = Validate.notNull(ddbClient);
         this.consoleLogTranscriptFlag = Validate.notNull(consoleLogTranscriptFlag);
+        this.lambdaClient = Validate.notNull(lambdaClient);
+        this.notification_lambda = System.getenv("WS_SEND_MESSAGE_LAMBDA");
+        if(this.notification_lambda == null)
+            this.notification_lambda = "ws_send_message";
     }
 
     public String getContactId() {
@@ -72,6 +85,27 @@ public class TranscribedSegmentWriter {
 
                 } catch (Exception e) {
                     logger.error("Exception while writing to DDB: ", e);
+                }
+
+                try {
+                    if(!result.isPartial()) {
+                        InvokeRequest invokeRequest = new InvokeRequest()
+                                .withFunctionName(this.notification_lambda)  // Replace with your Lambda function name
+                                .withInvocationType("Event")  // Async invocation
+                                .withPayload(String.format("{\"connectContactId\": \"%s\", \"customerPhoneNumber\": \"%s\", \"text\": \"%s\"}", this.contactId, this.customerPhoneNumber, result.alternatives().get(0).transcript()));
+
+                        // Invoke the Lambda function asynchronously
+                        InvokeResult invokeResult = this.lambdaClient.invoke(invokeRequest);
+
+                        // Check the result status
+                        int statusCode = invokeResult.getStatusCode();
+                        String response = new String(invokeResult.getPayload().array(), StandardCharsets.UTF_8);
+
+                        System.out.println("Lambda invocation completed with status code: " + statusCode);
+                        System.out.println("Response payload: " + response);  // Async invocation has no payload response
+                    }
+                } catch (Exception e) {
+                    logger.error("Exception while invoking lambda asynchronously: ", e);
                 }
             }
         }
