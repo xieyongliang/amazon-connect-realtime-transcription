@@ -553,7 +553,7 @@ Resources:
           SAVE_PARTIAL_TRANSCRIPTS: "TRUE"
           START_SELECTOR_TYPE: "FRAGMENT_NUMBER"
           SEND_ANONYMOUS_DATA: !FindInMap [ "Send", "AnonymousUsage", "Data"]
-          WS_SEND_MESSAGE_LAMBDA: !GetAtt WebSocketSendMessageFunction.Arn
+          NOTIFACTION_LAMBDA: !GetAtt WebSocketSendMessageFunction.Arn
       Code:
         S3Bucket: !Ref existingS3BucketName
         S3Key: !Join ["", [!Ref existingS3Path, 'kvs_transcribe_streaming_lambda.zip']]

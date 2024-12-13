@@ -44,7 +44,7 @@ public class TranscribedSegmentWriter {
     private static final boolean SAVE_PARTIAL_TRANSCRIPTS = Boolean.parseBoolean(System.getenv("SAVE_PARTIAL_TRANSCRIPTS"));
     private static final Logger logger = LoggerFactory.getLogger(TranscribedSegmentWriter.class);
     private AWSLambda lambdaClient;
-    private String notification_lambda;
+    private String notificationLambda;
 
     public TranscribedSegmentWriter(String contactId, String customerPhoneNumber, DynamoDB ddbClient, Boolean consoleLogTranscriptFlag, AWSLambda lambdaClient) {
 
@@ -53,9 +53,9 @@ public class TranscribedSegmentWriter {
         this.ddbClient = Validate.notNull(ddbClient);
         this.consoleLogTranscriptFlag = Validate.notNull(consoleLogTranscriptFlag);
         this.lambdaClient = Validate.notNull(lambdaClient);
-        this.notification_lambda = System.getenv("WS_SEND_MESSAGE_LAMBDA");
-        if(this.notification_lambda == null)
-            this.notification_lambda = "ws_send_message";
+        this.notificationLambda = System.getenv("NOTIFACTION_LAMBDA");
+        if(this.notificationLambda == null)
+            this.notificationLambda = "ws_send_message";
     }
 
     public String getContactId() {
@@ -90,7 +90,7 @@ public class TranscribedSegmentWriter {
                 try {
                     if(!result.isPartial()) {
                         InvokeRequest invokeRequest = new InvokeRequest()
-                                .withFunctionName(this.notification_lambda)  // Replace with your Lambda function name
+                                .withFunctionName(this.notificationLambda)  // Replace with your Lambda function name
                                 .withInvocationType("Event")  // Async invocation
                                 .withPayload(String.format("{\"connectContactId\": \"%s\", \"customerPhoneNumber\": \"%s\", \"text\": \"%s\"}", this.contactId, this.customerPhoneNumber, result.alternatives().get(0).transcript()));
 
