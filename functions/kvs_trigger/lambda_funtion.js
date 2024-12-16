@@ -25,29 +25,18 @@ exports.handler = (event, context, callback) => {
     // Function to update the dyamoDB with initial customer information
     updateDynamo(event);
 
-    let payload = "";
-
-    if (event.eventType) {
-        payload ={
-            inputFileName: "keepWarm.wav",
-            connectContactId: "12b87d2b-keepWarm",
-            customerPhoneNumber: "001234567890",
-            transcriptionEnabled: "false"
-        };
-    } else {
-        payload = {
-            streamARN: event.Details.ContactData.MediaStreams.Customer.Audio.StreamARN,
-            startFragmentNum: event.Details.ContactData.MediaStreams.Customer.Audio.StartFragmentNumber,
-            connectContactId: event.Details.ContactData.ContactId,
-            customerPhoneNumber: event.Details.ContactData.CustomerEndpoint.Address,
-            transcriptionEnabled: event.Details.ContactData.Attributes.transcribeCall === "true" ? true : false,
-            saveCallRecording: event.Details.ContactData.Attributes.saveCallRecording === "false" ? false : true,
-            languageCode: event.Details.ContactData.Attributes.languageCode === "es-US" ? "es-US" : "zh-CN",
-            // These default to true for backwards compatability purposes
-            streamAudioFromCustomer: event.Details.ContactData.Attributes.streamAudioFromCustomer === "false" ? false : true,
-            streamAudioToCustomer: event.Details.ContactData.Attributes.streamAudioToCustomer === "true" ? true : false
-        };
-    }
+    let payload = {
+        streamARN: event.Details.ContactData.MediaStreams.Customer.Audio.StreamARN,
+        startFragmentNum: event.Details.ContactData.MediaStreams.Customer.Audio.StartFragmentNumber,
+        connectContactId: event.Details.ContactData.ContactId,
+        customerPhoneNumber: event.Details.ContactData.CustomerEndpoint.Address,
+        transcriptionEnabled: event.Details.ContactData.Attributes.transcribeCall === "true" ? true : false,
+        saveCallRecording: event.Details.ContactData.Attributes.saveCallRecording === "false" ? false : true,
+        languageCode: event.Details.ContactData.Attributes.languageCode === "es-US" ? "es-US" : "zh-CN",
+        // These default to true for backwards compatability purposes
+        streamAudioFromCustomer: event.Details.ContactData.Attributes.streamAudioFromCustomer === "false" ? false : true,
+        streamAudioToCustomer: event.Details.ContactData.Attributes.streamAudioToCustomer === "true" ? true : false
+    };
 
     console.log("Trigger event passed to transcriberFunction" + JSON.stringify(payload));
 
