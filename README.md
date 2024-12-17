@@ -42,7 +42,7 @@ In the diagram above, once a call is connected to Amazon Connect:
 - (Step 12) The processContactSummary invokes the overlay-audio Lambda that takes the two audio file names, FROM_CUSTOMER and TO_CUSTOMER, and combines them.
 - (Step 13)	The processContactSummary writes the combined audio file to the combined audio S3 bucket.
 
-The Lambda code expects the Kinesis Video Stream details provided by the Amazon Connect Contact Flow as well as the Amazon Connect Contact Id. The handler function of the Lambda is present in `KVSTranscribeStreamingLambda.java` and it uses the GetMedia API of Kinesis Video Stream to fetch the InputStream of the customer audio call. The InputStream is processed using the AWS Kinesis Video Streams provided Parser Library. If the `transcriptionEnabled` property is set to true on the input, a TranscribeStreamingRetryClient client is used to send audio bytes of the audio call to Transcribe. As the transcript segments are being returned, they are saved in a DynamoDB table having ContactId as the Partition key and StartTime of the segment as the Sort key. The audio bytes are also saved in a file along with this and at the end of the audio call, if the `saveCallRecording` property is set to true on the input, the WAV audio file is uploaded to S3 in the provided `RECORDINGS_BUCKET_NAME` bucket.
+The Lambda code expects the Kinesis Video Stream details provided by the Amazon Connect Contact Flow as well as the Amazon Connect Contact Id, and the Customer Phone Number. The handler function of the Lambda is present in `KVSTranscribeStreamingLambda.java` and it uses the GetMedia API of Kinesis Video Stream to fetch the InputStream of the customer audio call. The InputStream is processed using the AWS Kinesis Video Streams provided Parser Library. If the `transcriptionEnabled` property is set to true on the input, a TranscribeStreamingRetryClient client is used to send audio bytes of the audio call to Transcribe. As the transcript segments are being returned, they are saved in a DynamoDB table having ContactId as the Partition key and StartTime of the segment as the Sort key. The audio bytes are also saved in a file along with this and at the end of the audio call, if the `saveCallRecording` property is set to true on the input, the WAV audio file is uploaded to S3 in the provided `RECORDINGS_BUCKET_NAME` bucket.
 
 See the Amazon Transcribe [streaming documentation](https://docs.aws.amazon.com/transcribe/latest/dg/streaming.html) for the latest supported languages.
 
@@ -51,11 +51,14 @@ Getting started with this project is easy. The most basic use case of capturing 
 
 ### Easy Setup
 - Clone the github repo into your account.
-- Create an S3 bucket and create a new folder “deployment” and upload the deployment/ folder into it
-    - Open the `cloudformation.template` file and copy the S3 url on it's detail page
+- Execute the following shell scripts.
+```bash
+sh build.sh
+sh upload.sh [s3-uri]
+```
 - Go to CloudFormation and select 'Create Stack'.
-    - Create the stack from an S3 url and paste the url from the cloudformation.template file
-    - Fill in the parameters for the stack. The existingS3BucketName and existingS3Path should be the ones created above that contain all the deployment related code.
+    - Create the stack by uploading the deployment/cloudformation.template file
+    - Fill in the parameters for the stack. The existingS3BucketName and existingS3Path should be the S3 bucket name and prefix of the S3 uri used by upload.sh script execution.
 ![](images/cloud-formation-stack-parameters.png)
 - While the stack is building, go to the Amazon Connect AWS console and ensure that your Amazon Connect instance has the "live media streaming" feature enabled by following the [Amazon Connect documentation](https://docs.aws.amazon.com/connect/latest/userguide/customer-voice-streams.html) for "Enable Live Media Streaming"
 - Once the stack is complete you will need to add the Lambda function to your Connect Instance. In the AWS Console open the Amazon Connect management console, select the Instance you would like to add the IVR recording capabilities to, go to the Contact Flows menu, and then the AWS Lambda section. Find the Lambda function with `kvsConsumerTrigger` in the name in the list and select Add Lambda Function.
@@ -94,6 +97,7 @@ This Lambda Function will need some details when invoked:
 * `streamARN` - The ARN of the Kinesis Video stream that includes the customer audio, this is provided by Amazon Connect when streaming is started successfully
 * `startFragmentNum` - Identifies the Kinesis Video Streams fragment in which the customer audio stream started, this is provided by Amazon Connect when streaming is started successfully
 * `connectContactId` - The Amazon Connect Contact ID, this is always present in the Amazon Connect invocation event.
+* `customerPhoneNumber` - The customer phone number, this is always present in the Amazon Connect invocation event.
 * `transcriptionEnabled` - An optional flag to instruct the Lambda function if transcription (using Amazon Transcribe) is to be enabled or not (options are "true" or "false")
 * `saveCallRecording` - An optional flag to instruct the Lambda function to upload the saved audio to S3 (options are "true" or "false")
 * `languageCode` - An optional flag to instruct the Lambda function on what language the source customer audio is in, as of this writing the options are: "en-US" or "es-US" (US-English, or US-Spanish)
@@ -108,10 +112,11 @@ The following is a sample invocation event:
        "streamARN": "arn:aws:kinesisvideo:us-east-1:6137874xxxxx:stream/kvsstreams-connect-demo-6855eee9-fa47-4b84-a970-ac6dbdd30b9d/1542430xxxxxx",
        "startFragmentNum": "9134385233318150666908441974200077706515712xxxx",
        "connectContactId": "b0e14540-ca63-4205-b285-c6dde79bxxxx",
+       "customerPhoneNumber": "00123456789"
        "transcriptionEnabled": "true",
        "saveCallRecording": "true",
        "languageCode": "en-US",
-       "streamAudioFromCustomer": "true",
+       "streamAudioFromCustomer": "false",
        "streamAudioToCustomer": "true"
     }
 ```
