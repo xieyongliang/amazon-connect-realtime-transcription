@@ -114,6 +114,9 @@ Outputs:
   createCombinedS3BucketOP:
     Description: Bucket contains the combined call recordings
     Value: !Sub 'https://console.aws.amazon.com/s3/home?region=${AWS::Region}&bucket=${s3CombinedBucketName}'
+  websocketEndpoint:
+    Description: "The WSS Protocol URI to connect to"
+    Value: !Sub https://${ApiGatewayWebSocket}.execute-api.${AWS::Region}.amazonaws.com/${Stage}
 
 Resources:  
 
@@ -595,7 +598,7 @@ Resources:
         - python3.13
       Content:
         S3Bucket: !Ref existingS3BucketName
-        S3Key: !Join ["", [!Ref existingS3Path, 'wslayer.zip']]
+        S3Key: !Join ["", [!Ref existingS3Path, 'ws_utils.zip']]
       Description: Layer providing common DynamodDB library to ws_* lambda
       LayerName: wstils
 
@@ -860,7 +863,7 @@ Resources:
   Stage:
     Type: AWS::ApiGatewayV2::Stage
     Properties:
-      StageName: Prod
+      StageName: prod
       Description: Prod Stage
       DeploymentId: !Ref ApiGatewayWebSocketDeployment
       ApiId: !Ref ApiGatewayWebSocket

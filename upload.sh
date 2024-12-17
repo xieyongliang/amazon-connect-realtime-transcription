@@ -5,3 +5,4 @@ if [ $# -lt 1 ]; then
 fi
 
 aws s3 cp build/distributions $1 --recursive --exclude "*" --include "*.zip"
+aws s3 cp deployment/layer.zip $1
