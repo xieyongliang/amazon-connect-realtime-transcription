@@ -1,481 +1,481 @@
 {
-    "Version": "2019-10-30",
-    "StartAction": "856dd865-e5a0-49c6-aacc-55fe53c38a22",
-    "Metadata": {
-      "entryPointPosition": {
-        "x": 17.6,
-        "y": 32.8
-      },
-      "ActionMetadata": {
-        "856dd865-e5a0-49c6-aacc-55fe53c38a22": {
-          "position": {
-            "x": 185.6,
-            "y": 14.4
-          }
-        },
-        "5e51bc17-152a-4930-baf3-f9d6edf6332b": {
-          "position": {
-            "x": 133.6,
-            "y": 225.6
-          },
-          "overrideConsoleVoice": false
-        },
-        "6728609a-9707-41f7-a87c-30ac1fde4f4c": {
-          "position": {
-            "x": -17.6,
-            "y": 655.2
-          },
-          "toCustomer": true,
-          "fromCustomer": true
-        },
-        "d5bd7724-4436-4bfc-bd2a-d0bee26963a1": {
-          "position": {
-            "x": 48.8,
-            "y": 422.4
-          }
-        },
-        "0cf2f66c-935a-4868-a85b-2908f4014965": {
-          "position": {
-            "x": 149.6,
-            "y": 879.2
-          }
-        },
-        "5e9cc9c3-ddfa-42c4-a797-3506d248504b": {
-          "position": {
-            "x": 215.2,
-            "y": 1989.6
-          }
-        },
-        "07273109-a75a-4742-aaae-ce35603c31fc": {
-          "position": {
-            "x": 302.4,
-            "y": 1767.2
-          }
-        },
-        "410057d0-9390-486b-bbb4-c4def2a7367c": {
-          "position": {
-            "x": 238.4,
-            "y": 653.6
-          }
-        },
-        "3f9659a3-56a5-4f3c-a431-fd9da2306459": {
-          "position": {
-            "x": 646.4,
-            "y": 1551.2
-          }
-        },
-        "99458f47-6941-48ce-9b90-fdf184759b22": {
-          "position": {
-            "x": 1139.2,
-            "y": 1123.2
-          }
-        },
-        "77e62468-2a55-4344-a353-07901f85bbfa": {
-          "position": {
-            "x": 404,
-            "y": 1127.2
-          }
-        },
-        "e7825b58-a9db-4935-9f83-e67a564176e8": {
-          "position": {
-            "x": -109.6,
-            "y": 878.4
-          },
-          "dynamicParams": []
-        },
-        "1c18e2fb-b75a-4ea0-8c8a-1db93a052fd9": {
-          "position": {
-            "x": -164.8,
-            "y": 1102.4
-          },
-          "conditionMetadata": [
-            {
-              "id": "47cfe2ab-0b5f-4739-b6ec-17dd318b9112",
-              "value": "1"
-            },
-            {
-              "id": "de09653f-d716-43b5-9e52-e8cd8c81a8ea",
-              "value": "2"
-            }
-          ]
-        },
-        "97a964a7-5dd2-4c82-b21f-173b209be8a7": {
-          "position": {
-            "x": 356,
-            "y": 1552.8
-          },
-          "parameters": {
-            "LambdaFunctionARN": {
-              "displayName": "ivr-recording-kvsConsumerTrigger-51pgFkS3x0n7"
-            }
-          },
-          "dynamicMetadata": {}
-        },
-        "c5d4e075-8001-4b88-abc5-606940dd2da5": {
-          "position": {
-            "x": 647.2,
-            "y": 1324.8
-          }
-        },
-        "75296961-7842-40f9-a11b-96eb57a6e18f": {
-          "position": {
-            "x": 149.6,
-            "y": 1324.8
-          },
-          "dynamicParams": []
-        },
-        "a51ba7f6-da9b-4987-9cd7-4b0ae559ef75": {
-          "position": {
-            "x": 150.4,
-            "y": 1132.8
-          },
-          "dynamicParams": []
-        },
-        "a3f7769e-3add-4df8-83ca-3d380331e37a": {
-          "position": {
-            "x": 405.6,
-            "y": 1324
-          },
-          "parameters": {
-            "QueueId": {
-              "displayName": "BasicQueue"
-            }
-          },
-          "queue": {
-            "text": "BasicQueue"
-          }
-        }
-      },
-      "Annotations": [],
-      "name": "kvsStreamingFlow",
-      "description": "",
-      "type": "contactFlow",
-      "status": "PUBLISHED",
-      "hash": {}
+  "Version": "2019-10-30",
+  "StartAction": "856dd865-e5a0-49c6-aacc-55fe53c38a22",
+  "Metadata": {
+    "entryPointPosition": {
+      "x": 17.6,
+      "y": 32.8
     },
-    "Actions": [
-      {
-        "Parameters": {
-          "FlowLoggingBehavior": "Enabled"
-        },
-        "Identifier": "856dd865-e5a0-49c6-aacc-55fe53c38a22",
-        "Type": "UpdateFlowLoggingBehavior",
-        "Transitions": {
-          "NextAction": "5e51bc17-152a-4930-baf3-f9d6edf6332b"
+    "ActionMetadata": {
+      "856dd865-e5a0-49c6-aacc-55fe53c38a22": {
+        "position": {
+          "x": 185.6,
+          "y": 14.4
         }
       },
-      {
-        "Parameters": {
-          "TextToSpeechVoice": "Zhiyu"
+      "5e51bc17-152a-4930-baf3-f9d6edf6332b": {
+        "position": {
+          "x": 133.6,
+          "y": 225.6
         },
-        "Identifier": "5e51bc17-152a-4930-baf3-f9d6edf6332b",
-        "Type": "UpdateContactTextToSpeechVoice",
-        "Transitions": {
-          "NextAction": "d5bd7724-4436-4bfc-bd2a-d0bee26963a1"
+        "overrideConsoleVoice": false
+      },
+      "6728609a-9707-41f7-a87c-30ac1fde4f4c": {
+        "position": {
+          "x": -17.6,
+          "y": 655.2
+        },
+        "toCustomer": true,
+        "fromCustomer": true
+      },
+      "d5bd7724-4436-4bfc-bd2a-d0bee26963a1": {
+        "position": {
+          "x": 48.8,
+          "y": 422.4
         }
       },
-      {
-        "Parameters": {
-          "MediaStreamingState": "Enabled",
-          "MediaStreamType": "Audio",
-          "Participants": [
-            {
-              "ParticipantType": "Customer",
-              "MediaDirections": [
-                "To",
-                "From"
+      "0cf2f66c-935a-4868-a85b-2908f4014965": {
+        "position": {
+          "x": 149.6,
+          "y": 879.2
+        }
+      },
+      "5e9cc9c3-ddfa-42c4-a797-3506d248504b": {
+        "position": {
+          "x": 215.2,
+          "y": 1989.6
+        }
+      },
+      "410057d0-9390-486b-bbb4-c4def2a7367c": {
+        "position": {
+          "x": 238.4,
+          "y": 653.6
+        }
+      },
+      "99458f47-6941-48ce-9b90-fdf184759b22": {
+        "position": {
+          "x": 1139.2,
+          "y": 1123.2
+        }
+      },
+      "e7825b58-a9db-4935-9f83-e67a564176e8": {
+        "position": {
+          "x": -109.6,
+          "y": 878.4
+        },
+        "dynamicParams": []
+      },
+      "c5d4e075-8001-4b88-abc5-606940dd2da5": {
+        "position": {
+          "x": 647.2,
+          "y": 1324.8
+        }
+      },
+      "a51ba7f6-da9b-4987-9cd7-4b0ae559ef75": {
+        "position": {
+          "x": 150.4,
+          "y": 1132.8
+        },
+        "dynamicParams": []
+      },
+      "07273109-a75a-4742-aaae-ce35603c31fc": {
+        "position": {
+          "x": 302.4,
+          "y": 1767.2
+        }
+      },
+      "3f9659a3-56a5-4f3c-a431-fd9da2306459": {
+        "position": {
+          "x": 646.4,
+          "y": 1551.2
+        }
+      },
+      "97a964a7-5dd2-4c82-b21f-173b209be8a7": {
+        "position": {
+          "x": 355.2,
+          "y": 1550.4
+        },
+        "parameters": {
+          "LambdaFunctionARN": {
+            "displayName": "ivr-recording-kvsConsumerTrigger-51pgFkS3x0n7"
+          }
+        },
+        "dynamicMetadata": {}
+      },
+      "77e62468-2a55-4344-a353-07901f85bbfa": {
+        "position": {
+          "x": 404,
+          "y": 1127.2
+        }
+      },
+      "1c18e2fb-b75a-4ea0-8c8a-1db93a052fd9": {
+        "position": {
+          "x": -164.8,
+          "y": 1102.4
+        },
+        "conditionMetadata": [
+          {
+            "id": "977b988a-4641-4e42-a593-bb31df15597e",
+            "value": "1"
+          },
+          {
+            "id": "0231a5c4-7146-4fab-bdfd-bc71afb88dea",
+            "value": "2"
+          }
+        ]
+      },
+      "a3f7769e-3add-4df8-83ca-3d380331e37a": {
+        "position": {
+          "x": 405.6,
+          "y": 1324
+        },
+        "parameters": {
+          "QueueId": {
+            "displayName": "BasicQueue"
+          }
+        },
+        "queue": {
+          "text": "BasicQueue"
+        }
+      },
+      "75296961-7842-40f9-a11b-96eb57a6e18f": {
+        "position": {
+          "x": 149.6,
+          "y": 1324.8
+        },
+        "dynamicParams": []
+      }
+    },
+    "Annotations": [],
+    "name": "kvsStreamingFlow",
+    "description": "",
+    "type": "contactFlow",
+    "status": "PUBLISHED",
+    "hash": {}
+  },
+  "Actions": [
+    {
+      "Parameters": {
+        "FlowLoggingBehavior": "Enabled"
+      },
+      "Identifier": "856dd865-e5a0-49c6-aacc-55fe53c38a22",
+      "Type": "UpdateFlowLoggingBehavior",
+      "Transitions": {
+        "NextAction": "5e51bc17-152a-4930-baf3-f9d6edf6332b"
+      }
+    },
+    {
+      "Parameters": {
+        "TextToSpeechVoice": "Zhiyu"
+      },
+      "Identifier": "5e51bc17-152a-4930-baf3-f9d6edf6332b",
+      "Type": "UpdateContactTextToSpeechVoice",
+      "Transitions": {
+        "NextAction": "d5bd7724-4436-4bfc-bd2a-d0bee26963a1"
+      }
+    },
+    {
+      "Parameters": {
+        "MediaStreamingState": "Enabled",
+        "MediaStreamType": "Audio",
+        "Participants": [
+          {
+            "ParticipantType": "Customer",
+            "MediaDirections": [
+              "To",
+              "From"
+            ]
+          }
+        ]
+      },
+      "Identifier": "6728609a-9707-41f7-a87c-30ac1fde4f4c",
+      "Type": "UpdateContactMediaStreamingBehavior",
+      "Transitions": {
+        "NextAction": "e7825b58-a9db-4935-9f83-e67a564176e8",
+        "Errors": [
+          {
+            "NextAction": "410057d0-9390-486b-bbb4-c4def2a7367c",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "SSML": "<speak>\n感谢使用 Amazon Connect\n<break time=\"500ms\"/>\n</speak>"
+      },
+      "Identifier": "d5bd7724-4436-4bfc-bd2a-d0bee26963a1",
+      "Type": "MessageParticipant",
+      "Transitions": {
+        "NextAction": "6728609a-9707-41f7-a87c-30ac1fde4f4c",
+        "Errors": [
+          {
+            "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "Text": "当设置联系属性时出错了"
+      },
+      "Identifier": "0cf2f66c-935a-4868-a85b-2908f4014965",
+      "Type": "MessageParticipant",
+      "Transitions": {
+        "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
+        "Errors": [
+          {
+            "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {},
+      "Identifier": "5e9cc9c3-ddfa-42c4-a797-3506d248504b",
+      "Type": "TransferContactToQueue",
+      "Transitions": {
+        "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
+        "Errors": [
+          {
+            "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
+            "ErrorType": "QueueAtCapacity"
+          },
+          {
+            "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "Text": "当启动流媒体时出错了。"
+      },
+      "Identifier": "410057d0-9390-486b-bbb4-c4def2a7367c",
+      "Type": "MessageParticipant",
+      "Transitions": {
+        "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
+        "Errors": [
+          {
+            "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {},
+      "Identifier": "99458f47-6941-48ce-9b90-fdf184759b22",
+      "Type": "DisconnectParticipant",
+      "Transitions": {}
+    },
+    {
+      "Parameters": {
+        "Attributes": {
+          "transcribeCall": "true",
+          "saveCallRecording": "true",
+          "languageCode": "zh-CN"
+        },
+        "TargetContact": "Current"
+      },
+      "Identifier": "e7825b58-a9db-4935-9f83-e67a564176e8",
+      "Type": "UpdateContactAttributes",
+      "Transitions": {
+        "NextAction": "1c18e2fb-b75a-4ea0-8c8a-1db93a052fd9",
+        "Errors": [
+          {
+            "NextAction": "0cf2f66c-935a-4868-a85b-2908f4014965",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "Text": "当设置工作队列时时出错了"
+      },
+      "Identifier": "c5d4e075-8001-4b88-abc5-606940dd2da5",
+      "Type": "MessageParticipant",
+      "Transitions": {
+        "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
+        "Errors": [
+          {
+            "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "Attributes": {
+          "languageCode": "zh-CN"
+        },
+        "TargetContact": "Current"
+      },
+      "Identifier": "a51ba7f6-da9b-4987-9cd7-4b0ae559ef75",
+      "Type": "UpdateContactAttributes",
+      "Transitions": {
+        "NextAction": "a3f7769e-3add-4df8-83ca-3d380331e37a",
+        "Errors": [
+          {
+            "NextAction": "77e62468-2a55-4344-a353-07901f85bbfa",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "SSML": "<speak>\n这是演示 Amazon Connect IVR 中客户音频流和录制的示例流程。使用此解决方案，客户所说的任何话或对客户的任何提示都将被记录下来。<break time=\"1000ms\"/>\n接下来将转接到人工坐席\n</speak>"
+      },
+      "Identifier": "07273109-a75a-4742-aaae-ce35603c31fc",
+      "Type": "MessageParticipant",
+      "Transitions": {
+        "NextAction": "5e9cc9c3-ddfa-42c4-a797-3506d248504b",
+        "Errors": [
+          {
+            "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "Text": "当触发 Kinesis Video Stream 消费者 Lambda 函数时出错了"
+      },
+      "Identifier": "3f9659a3-56a5-4f3c-a431-fd9da2306459",
+      "Type": "MessageParticipant",
+      "Transitions": {
+        "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
+        "Errors": [
+          {
+            "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "LambdaFunctionARN": "arn:aws:lambda:us-west-2:034068151705:function:ivr-recording-kvsConsumerTrigger-51pgFkS3x0n7",
+        "InvocationTimeLimitSeconds": "8",
+        "ResponseValidation": {
+          "ResponseType": "STRING_MAP"
+        }
+      },
+      "Identifier": "97a964a7-5dd2-4c82-b21f-173b209be8a7",
+      "Type": "InvokeLambdaFunction",
+      "Transitions": {
+        "NextAction": "07273109-a75a-4742-aaae-ce35603c31fc",
+        "Errors": [
+          {
+            "NextAction": "3f9659a3-56a5-4f3c-a431-fd9da2306459",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "Text": "设置语言出错了"
+      },
+      "Identifier": "77e62468-2a55-4344-a353-07901f85bbfa",
+      "Type": "MessageParticipant",
+      "Transitions": {
+        "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
+        "Errors": [
+          {
+            "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "Text": "按 1 选择中文,  按 2 选择英文, 默认为中文",
+        "StoreInput": "False",
+        "InputTimeLimitSeconds": "5"
+      },
+      "Identifier": "1c18e2fb-b75a-4ea0-8c8a-1db93a052fd9",
+      "Type": "GetParticipantInput",
+      "Transitions": {
+        "NextAction": "a51ba7f6-da9b-4987-9cd7-4b0ae559ef75",
+        "Conditions": [
+          {
+            "NextAction": "a51ba7f6-da9b-4987-9cd7-4b0ae559ef75",
+            "Condition": {
+              "Operator": "Equals",
+              "Operands": [
+                "1"
               ]
             }
-          ]
-        },
-        "Identifier": "6728609a-9707-41f7-a87c-30ac1fde4f4c",
-        "Type": "UpdateContactMediaStreamingBehavior",
-        "Transitions": {
-          "NextAction": "e7825b58-a9db-4935-9f83-e67a564176e8",
-          "Errors": [
-            {
-              "NextAction": "410057d0-9390-486b-bbb4-c4def2a7367c",
-              "ErrorType": "NoMatchingError"
-            }
-          ]
-        }
-      },
-      {
-        "Parameters": {
-          "SSML": "<speak>\n感谢使用 Amazon Connect\n<break time=\"500ms\"/>\n</speak>"
-        },
-        "Identifier": "d5bd7724-4436-4bfc-bd2a-d0bee26963a1",
-        "Type": "MessageParticipant",
-        "Transitions": {
-          "NextAction": "6728609a-9707-41f7-a87c-30ac1fde4f4c",
-          "Errors": [
-            {
-              "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
-              "ErrorType": "NoMatchingError"
-            }
-          ]
-        }
-      },
-      {
-        "Parameters": {
-          "Text": "当设置联系属性时出错了"
-        },
-        "Identifier": "0cf2f66c-935a-4868-a85b-2908f4014965",
-        "Type": "MessageParticipant",
-        "Transitions": {
-          "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
-          "Errors": [
-            {
-              "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
-              "ErrorType": "NoMatchingError"
-            }
-          ]
-        }
-      },
-      {
-        "Parameters": {},
-        "Identifier": "5e9cc9c3-ddfa-42c4-a797-3506d248504b",
-        "Type": "TransferContactToQueue",
-        "Transitions": {
-          "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
-          "Errors": [
-            {
-              "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
-              "ErrorType": "QueueAtCapacity"
-            },
-            {
-              "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
-              "ErrorType": "NoMatchingError"
-            }
-          ]
-        }
-      },
-      {
-        "Parameters": {
-          "SSML": "<speak>\n这是演示 Amazon Connect IVR 中客户音频流和录制的示例流程。使用此解决方案，客户所说的任何话或对客户的任何提示都将被记录下来。<break time=\"1000ms\"/>\n接下来将转接到人工坐席\n</speak>"
-        },
-        "Identifier": "07273109-a75a-4742-aaae-ce35603c31fc",
-        "Type": "MessageParticipant",
-        "Transitions": {
-          "NextAction": "5e9cc9c3-ddfa-42c4-a797-3506d248504b",
-          "Errors": [
-            {
-              "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
-              "ErrorType": "NoMatchingError"
-            }
-          ]
-        }
-      },
-      {
-        "Parameters": {
-          "Text": "当启动流媒体时出错了。"
-        },
-        "Identifier": "410057d0-9390-486b-bbb4-c4def2a7367c",
-        "Type": "MessageParticipant",
-        "Transitions": {
-          "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
-          "Errors": [
-            {
-              "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
-              "ErrorType": "NoMatchingError"
-            }
-          ]
-        }
-      },
-      {
-        "Parameters": {
-          "Text": "当触发 Kinesis Video Stream 消费者 Lambda 函数时出错了"
-        },
-        "Identifier": "3f9659a3-56a5-4f3c-a431-fd9da2306459",
-        "Type": "MessageParticipant",
-        "Transitions": {
-          "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
-          "Errors": [
-            {
-              "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
-              "ErrorType": "NoMatchingError"
-            }
-          ]
-        }
-      },
-      {
-        "Parameters": {},
-        "Identifier": "99458f47-6941-48ce-9b90-fdf184759b22",
-        "Type": "DisconnectParticipant",
-        "Transitions": {}
-      },
-      {
-        "Parameters": {
-          "Text": "设置语言出错了"
-        },
-        "Identifier": "77e62468-2a55-4344-a353-07901f85bbfa",
-        "Type": "MessageParticipant",
-        "Transitions": {
-          "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
-          "Errors": [
-            {
-              "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
-              "ErrorType": "NoMatchingError"
-            }
-          ]
-        }
-      },
-      {
-        "Parameters": {
-          "Attributes": {
-            "transcribeCall": "true",
-            "saveCallRecording": "true",
-            "languageCode": "zh-CN"
           },
-          "TargetContact": "Current"
-        },
-        "Identifier": "e7825b58-a9db-4935-9f83-e67a564176e8",
-        "Type": "UpdateContactAttributes",
-        "Transitions": {
-          "NextAction": "1c18e2fb-b75a-4ea0-8c8a-1db93a052fd9",
-          "Errors": [
-            {
-              "NextAction": "0cf2f66c-935a-4868-a85b-2908f4014965",
-              "ErrorType": "NoMatchingError"
+          {
+            "NextAction": "75296961-7842-40f9-a11b-96eb57a6e18f",
+            "Condition": {
+              "Operator": "Equals",
+              "Operands": [
+                "2"
+              ]
             }
-          ]
-        }
-      },
-      {
-        "Parameters": {
-          "Text": "按 1 选择中文,  按 2 选择英文, 默认为中文",
-          "StoreInput": "False",
-          "InputTimeLimitSeconds": "5"
-        },
-        "Identifier": "1c18e2fb-b75a-4ea0-8c8a-1db93a052fd9",
-        "Type": "GetParticipantInput",
-        "Transitions": {
-          "NextAction": "a51ba7f6-da9b-4987-9cd7-4b0ae559ef75",
-          "Conditions": [
-            {
-              "NextAction": "a51ba7f6-da9b-4987-9cd7-4b0ae559ef75",
-              "Condition": {
-                "Operator": "Equals",
-                "Operands": [
-                  "1"
-                ]
-              }
-            },
-            {
-              "NextAction": "75296961-7842-40f9-a11b-96eb57a6e18f",
-              "Condition": {
-                "Operator": "Equals",
-                "Operands": [
-                  "2"
-                ]
-              }
-            }
-          ],
-          "Errors": [
-            {
-              "NextAction": "a51ba7f6-da9b-4987-9cd7-4b0ae559ef75",
-              "ErrorType": "InputTimeLimitExceeded"
-            },
-            {
-              "NextAction": "a51ba7f6-da9b-4987-9cd7-4b0ae559ef75",
-              "ErrorType": "NoMatchingCondition"
-            },
-            {
-              "NextAction": "a51ba7f6-da9b-4987-9cd7-4b0ae559ef75",
-              "ErrorType": "NoMatchingError"
-            }
-          ]
-        }
-      },
-      {
-        "Parameters": {
-          "LambdaFunctionARN": "arn:aws:lambda:us-west-2:034068151705:function:ivr-recording-kvsConsumerTrigger-51pgFkS3x0n7",
-          "InvocationTimeLimitSeconds": "8",
-          "ResponseValidation": {
-            "ResponseType": "STRING_MAP"
           }
-        },
-        "Identifier": "97a964a7-5dd2-4c82-b21f-173b209be8a7",
-        "Type": "InvokeLambdaFunction",
-        "Transitions": {
-          "NextAction": "07273109-a75a-4742-aaae-ce35603c31fc",
-          "Errors": [
-            {
-              "NextAction": "3f9659a3-56a5-4f3c-a431-fd9da2306459",
-              "ErrorType": "NoMatchingError"
-            }
-          ]
-        }
-      },
-      {
-        "Parameters": {
-          "Text": "当设置工作队列时时出错了"
-        },
-        "Identifier": "c5d4e075-8001-4b88-abc5-606940dd2da5",
-        "Type": "MessageParticipant",
-        "Transitions": {
-          "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
-          "Errors": [
-            {
-              "NextAction": "99458f47-6941-48ce-9b90-fdf184759b22",
-              "ErrorType": "NoMatchingError"
-            }
-          ]
-        }
-      },
-      {
-        "Parameters": {
-          "Attributes": {
-            "en-US": "languageCode"
+        ],
+        "Errors": [
+          {
+            "NextAction": "a51ba7f6-da9b-4987-9cd7-4b0ae559ef75",
+            "ErrorType": "InputTimeLimitExceeded"
           },
-          "TargetContact": "Current"
-        },
-        "Identifier": "75296961-7842-40f9-a11b-96eb57a6e18f",
-        "Type": "UpdateContactAttributes",
-        "Transitions": {
-          "NextAction": "a3f7769e-3add-4df8-83ca-3d380331e37a",
-          "Errors": [
-            {
-              "NextAction": "77e62468-2a55-4344-a353-07901f85bbfa",
-              "ErrorType": "NoMatchingError"
-            }
-          ]
-        }
-      },
-      {
-        "Parameters": {
-          "Attributes": {
-            "languageCode": "zh-CN"
+          {
+            "NextAction": "a51ba7f6-da9b-4987-9cd7-4b0ae559ef75",
+            "ErrorType": "NoMatchingCondition"
           },
-          "TargetContact": "Current"
-        },
-        "Identifier": "a51ba7f6-da9b-4987-9cd7-4b0ae559ef75",
-        "Type": "UpdateContactAttributes",
-        "Transitions": {
-          "NextAction": "a3f7769e-3add-4df8-83ca-3d380331e37a",
-          "Errors": [
-            {
-              "NextAction": "77e62468-2a55-4344-a353-07901f85bbfa",
-              "ErrorType": "NoMatchingError"
-            }
-          ]
-        }
-      },
-      {
-        "Parameters": {
-          "QueueId": "arn:aws:connect:us-west-2:034068151705:instance/f13235a8-aef4-4533-8a42-35344b87720c/queue/e1c9fc25-7f6c-44e9-9090-003c3fb9794c"
-        },
-        "Identifier": "a3f7769e-3add-4df8-83ca-3d380331e37a",
-        "Type": "UpdateContactTargetQueue",
-        "Transitions": {
-          "NextAction": "97a964a7-5dd2-4c82-b21f-173b209be8a7",
-          "Errors": [
-            {
-              "NextAction": "c5d4e075-8001-4b88-abc5-606940dd2da5",
-              "ErrorType": "NoMatchingError"
-            }
-          ]
-        }
+          {
+            "NextAction": "a51ba7f6-da9b-4987-9cd7-4b0ae559ef75",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
       }
-    ]
-  }
+    },
+    {
+      "Parameters": {
+        "QueueId": "arn:aws:connect:us-west-2:034068151705:instance/f13235a8-aef4-4533-8a42-35344b87720c/queue/e1c9fc25-7f6c-44e9-9090-003c3fb9794c"
+      },
+      "Identifier": "a3f7769e-3add-4df8-83ca-3d380331e37a",
+      "Type": "UpdateContactTargetQueue",
+      "Transitions": {
+        "NextAction": "97a964a7-5dd2-4c82-b21f-173b209be8a7",
+        "Errors": [
+          {
+            "NextAction": "c5d4e075-8001-4b88-abc5-606940dd2da5",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "Attributes": {
+          "languageCode": "en-US"
+        },
+        "TargetContact": "Current"
+      },
+      "Identifier": "75296961-7842-40f9-a11b-96eb57a6e18f",
+      "Type": "UpdateContactAttributes",
+      "Transitions": {
+        "NextAction": "a3f7769e-3add-4df8-83ca-3d380331e37a",
+        "Errors": [
+          {
+            "NextAction": "77e62468-2a55-4344-a353-07901f85bbfa",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    }
+  ]
+}
