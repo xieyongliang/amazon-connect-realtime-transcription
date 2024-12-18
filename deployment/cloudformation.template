@@ -326,7 +326,7 @@ Resources:
                 Action:
                   - "lambda:InvokeFunction"
                 Resource:
-                  - !Sub ${WebSocketSendMessageFunction.Arn}  
+                  - !Sub ${WebSocketSendMessageFunction.Arn}
               -
                 Effect: "Allow"
                 Action:
@@ -473,7 +473,6 @@ Resources:
            
   OverlayAudioRole:
         Type: "AWS::IAM::Role"
-        DependsOn: WebSocketSendMessageFunction
         Properties:
           AssumeRolePolicyDocument:
             Version: "2012-10-17"
@@ -556,7 +555,7 @@ Resources:
           SAVE_PARTIAL_TRANSCRIPTS: "TRUE"
           START_SELECTOR_TYPE: "FRAGMENT_NUMBER"
           SEND_ANONYMOUS_DATA: !FindInMap [ "Send", "AnonymousUsage", "Data"]
-          NOTIFACTION_LAMBDA: !GetAtt WebSocketSendMessageFunction.Arn
+          NOTIFACTION_LAMBDA: !Ref WebSocketSendMessageFunction
       Code:
         S3Bucket: !Ref existingS3BucketName
         S3Key: !Join ["", [!Ref existingS3Path, 'kvs_transcribe_streaming_lambda.zip']]
